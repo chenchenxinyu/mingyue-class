@@ -1,0 +1,4 @@
+bool workstate
+float64[4] ArmAngle
+---
+bool controllerstate

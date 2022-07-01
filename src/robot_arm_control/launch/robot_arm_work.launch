@@ -1,0 +1,6 @@
+<launch>
+<node name="server_work" pkg="robot_arm_control" type="robot_arm_service"/>
+<node name="controller_work" pkg="robot_arm_control" type="ArmControllerServer"/>
+<node name="path_work" pkg="robot_arm_control" type="path_list"/>
+<node name="path_actuator" pkg="robot_arm_control" type="path_actuator"/>
+</launch>

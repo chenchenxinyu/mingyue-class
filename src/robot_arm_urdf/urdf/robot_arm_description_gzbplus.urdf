@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<robot name="four-dof-arm">
+    <!--used for fixing robot to gazebo 'base_link'-->
+    <link name="world"/>
+    
+    <joint name="glue_robot_to_world" type="fixed">
+        <parent link="world"/>
+        <child link="link1"/>
+    </joint>
+    <!--base link-->
+    <link name="link1">
+        <collision>
+            <origin xyz="0 0 0.5" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.2 0.2 0.7"/>
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.2 0.2 1"/>
+            </geometry>
+            
+        </visual>
+
+        <inertial>
+            <origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 0.0"/>
+            <mass value="1"/>
+           <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+    </link>
+<!--moveable link-->
+    <link name="link2">
+        <collision>
+            <origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.1" length="1"/>
+                <!--box size is 0.15 0.15 0.8-->
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.1" length="1"/>
+            </geometry>
+        </visual>
+        <inertial>
+            <origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 0.0"/>
+            <mass value="1"/>
+            <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.005"/>
+        </inertial>
+    </link>
+
+    <joint name="joint1" type="revolute">
+    <!-- joint have three type revolute is in range angles, another is prismatic,it let the link longer or shorter -->
+        <parent link="link1"/>
+        <child link="link2"/>
+        <origin xyz="0.0 0.0 1" rpy="0.0 0.0 0.0"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <limit lower="0.0" upper="2.0" effort="10.0" velocity="0.5"/>
+        <!--joint's limit the angle the N and dynamic damping is the damping-->
+        <dynamics damping="1.0"/>
+    </joint>
+
+    <transmission name="tran1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint1">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="motor1">
+            <hardwareInterface>EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+            <robotNamespace>/panda</robotNamespace>
+        </plugin>
+    </gazebo>
+</robot>

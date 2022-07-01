@@ -1,0 +1,10 @@
+#you can use your self message, but remember the package.xml the depend
+#goal definition  
+int32 input
+---
+#result definition
+int32 output
+int32 goal_stamp
+---
+#feedback
+int32 fdbk
